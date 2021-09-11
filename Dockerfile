@@ -3,18 +3,18 @@
 # The `buildkitd` stage and the `buildctl` stage are placed here
 # so that they can be built quickly with legacy DAG-unaware `docker build --target=...`
 
-FROM golang:1.11-alpine AS gobuild-base
+FROM golang:1.17-alpine AS gobuild-base
 RUN apk add --no-cache git make g++ libseccomp-dev
 
 
 FROM gobuild-base AS repo-copy
-WORKDIR /go/src/github.com/tonistiigi/repo-copy
+WORKDIR /go/src/github.com/akhilerm/repo-copy
 RUN --mount=target=. go build -o /out/repo-copy ./
 
 FROM gobuild-base AS containerd
 RUN apk add --no-cache btrfs-progs-dev
-ARG CONTAINERD_VERSION=55420c95
-RUN git clone https://github.com/tonistiigi/containerd.git /go/src/github.com/containerd/containerd
+ARG CONTAINERD_VERSION=0fdbd450d78c055767bb9e05dd8200e538873900
+RUN git clone https://github.com/akhilerm/containerd.git /go/src/github.com/containerd/containerd
 WORKDIR /go/src/github.com/containerd/containerd
 RUN git checkout -q "$CONTAINERD_VERSION" \
   && make bin/containerd \
