@@ -1,3 +1,3 @@
-module github.com/akhilerm/repo-copy
+module github.com/stephanosio/repo-copy
 
 go 1.17
